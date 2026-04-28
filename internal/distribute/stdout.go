@@ -2,9 +2,9 @@ package distribute
 
 import (
 	"context"
-	"log"
 
 	"hotnew/internal/domain"
+	"hotnew/internal/platform/logger"
 )
 
 type StdoutDistributor struct{}
@@ -14,6 +14,6 @@ func NewStdoutDistributor() StdoutDistributor {
 }
 
 func (StdoutDistributor) Distribute(_ context.Context, article domain.Article) error {
-	log.Printf("distributed article source=%s title=%q", article.Source, article.Title)
+	logger.Info("distributed article source=%s title=%q", article.Source, article.Title)
 	return nil
 }

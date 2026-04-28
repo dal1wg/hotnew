@@ -85,7 +85,7 @@ func (s *SQLiteArticleStore) Upsert(ctx context.Context, article domain.Article)
 	if err != nil {
 		return false, fmt.Errorf("marshal article tags: %w", err)
 	}
-	_, err = s.db.db.ExecContext(ctx, `INSERT INTO articles (id, source, title, url, author, published_at, content, summary, tags_json, language, hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET source=excluded.source, title=excluded.title, url=excluded.url, author=excluded.author, published_at=excluded.published_at, content=excluded.content, summary=excluded.summary, tags_json=excluded.tags_json, language=excluded.language, hash=excluded.hash`, article.ID, article.Source, article.Title, article.URL, article.Author, formatTime(article.PublishedAt), article.Content, article.Summary, string(tagsJSON), article.Language, article.Hash)
+	_, err = s.db.db.ExecContext(ctx, `INSERT INTO articles (id, source, title, url, author, published_at, content, summary, tags_json, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET source=excluded.source, title=excluded.title, url=excluded.url, author=excluded.author, published_at=excluded.published_at, content=excluded.content, summary=excluded.summary, tags_json=excluded.tags_json, language=excluded.language`, article.ID, article.Source, article.Title, article.URL, article.Author, formatTime(article.PublishedAt), article.Content, article.Summary, string(tagsJSON), article.Language)
 	if err != nil {
 		return false, fmt.Errorf("upsert article: %w", err)
 	}
@@ -96,7 +96,7 @@ func (s *SQLiteArticleStore) List(ctx context.Context, limit int) ([]domain.Arti
 	if limit <= 0 {
 		limit = 20
 	}
-	rows, err := s.db.db.QueryContext(ctx, `SELECT id, source, title, url, author, published_at, content, summary, tags_json, language, hash FROM articles ORDER BY published_at DESC, id DESC LIMIT ?`, limit)
+	rows, err := s.db.db.QueryContext(ctx, `SELECT id, source, title, url, author, published_at, content, summary, tags_json, language FROM articles ORDER BY published_at DESC, id DESC LIMIT ?`, limit)
 	if err != nil {
 		return nil, fmt.Errorf("list articles: %w", err)
 	}
@@ -372,7 +372,7 @@ type articleScanner interface{ Scan(dest ...any) error }
 func scanArticle(scanner articleScanner) (domain.Article, error) {
 	var article domain.Article
 	var publishedAt, tagsJSON string
-	if err := scanner.Scan(&article.ID, &article.Source, &article.Title, &article.URL, &article.Author, &publishedAt, &article.Content, &article.Summary, &tagsJSON, &article.Language, &article.Hash); err != nil {
+	if err := scanner.Scan(&article.ID, &article.Source, &article.Title, &article.URL, &article.Author, &publishedAt, &article.Content, &article.Summary, &tagsJSON, &article.Language); err != nil {
 		return domain.Article{}, err
 	}
 	article.PublishedAt = parseTime(publishedAt)

@@ -18,7 +18,6 @@ func TestFileArticleStorePersistsRecords(t *testing.T) {
 
 	article := domain.Article{
 		ID:          "1",
-		Hash:        "1",
 		Title:       "hello",
 		Source:      "test",
 		URL:         "https://example.com",

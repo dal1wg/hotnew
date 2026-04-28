@@ -23,7 +23,6 @@ func TestBuildPost(t *testing.T) {
 
 	post := distributor.BuildPost(domain.Article{
 		ID:          "abc12345xyz",
-		Hash:        "hash-1",
 		Source:      "feed",
 		Title:       "Go 1.23 Released",
 		URL:         "https://example.com/source",

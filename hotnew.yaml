@@ -1,0 +1,132 @@
+# Standard YAML config for hotnew
+
+# HTTP
+http:
+  addr: :8080
+
+# Summary
+summary:
+  max_chars: 180
+
+# Storage
+store:
+  backend: sqlite
+  data_dir: data
+  sqlite_dsn: data/hotnew.db
+  file_articles_path: data/articles.jsonl
+  file_deliveries_path: data/deliveries.jsonl
+  file_retries_path: data/retry_jobs.jsonl
+  file_retries_archive_path: data/retry_jobs.archive.jsonl
+
+# Scheduler
+scheduler:
+  enabled: true
+  interval: 15m
+  run_limit: 10
+  run_timeout: 30s
+  start_immediately: true
+
+# Retry
+retry:
+  enabled: true
+  interval: 1m
+  batch_size: 10
+  timeout: 30s
+  max_attempts: 3
+  backoff: 5m
+  max_backoff: 6h
+  archive_after: 168h
+  archive_batch: 100
+
+# Distribution
+distribute:
+  async_buffer: 128
+  dingtalk:
+    enabled: true
+    webhook: "https://oapi.dingtalk.com/robot/send?access_token=47977f5e4699957c5c0b8718c2b3f5c0165eb901497fb8b2a3a1483d6a9f711c"
+    timeout: 5s
+    security_type: both
+    keyword: test1
+    secret: SEC9b99c3c3722ba62b44952d519040b7e98c119ffddc617f332241b3368d7fb7e3
+    use_keyword: true
+    use_sign: true
+    rate_limit: 20
+    rate_limit_period: 60s
+  blog:
+    enabled: false
+    endpoint: ""
+    timeout: 5s
+    auth_token: ""
+    site_name: hotnew
+    author: hotnew
+    mode: markdown
+  wecom:
+    enabled: false
+    webhook: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=YOUR_KEY"
+    timeout: 5s
+
+# Logging
+logging:
+  level: info
+  format: text
+  output: file
+  file_path: logs/hotnew.log
+  max_size: 10
+  max_backups: 5
+  max_age: 30
+  compress: true
+
+# RSS Sources - 国内专业科技领域RSS源
+sources:
+  - name: 36kr
+    kind: rss
+    base_url: https://36kr.com
+    feed_url: https://36kr.com/feed
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://36kr.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5
+  - name: tmtpost
+    kind: rss
+    base_url: https://www.tmtpost.com
+    feed_url: https://www.tmtpost.com/feed
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://www.tmtpost.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5
+  - name: ifanr
+    kind: rss
+    base_url: https://www.ifanr.com
+    feed_url: https://www.ifanr.com/feed
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://www.ifanr.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5
+  - name: ithome
+    kind: rss
+    base_url: https://www.ithome.com
+    feed_url: https://www.ithome.com/rss/
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://www.ithome.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5

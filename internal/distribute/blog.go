@@ -97,7 +97,7 @@ func (d BlogDistributor) BuildPost(article domain.Article) domain.BlogPost {
 		SourceAt:       article.PublishedAt,
 		Language:       article.Language,
 		SiteName:       fallbackString(d.siteName, "hotnew"),
-		IdempotencyKey: article.Hash,
+		IdempotencyKey: article.ID,
 	}
 }
 

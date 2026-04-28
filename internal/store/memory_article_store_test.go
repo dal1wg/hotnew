@@ -12,7 +12,6 @@ func TestMemoryArticleStoreUpsertDeduplicates(t *testing.T) {
 	s := NewMemoryArticleStore()
 	article := domain.Article{
 		ID:          "1",
-		Hash:        "1",
 		Title:       "hello",
 		Source:      "test",
 		URL:         "https://example.com",

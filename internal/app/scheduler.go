@@ -2,9 +2,10 @@ package app
 
 import (
 	"context"
-	"log"
 	"sync"
 	"time"
+
+	"hotnew/internal/platform/logger"
 )
 
 type Scheduler struct {
@@ -86,8 +87,8 @@ func (s *Scheduler) runOnce(ctx context.Context) {
 
 	result, err := s.runner.RunNow(runCtx, s.runLimit, "scheduler")
 	if err != nil {
-		log.Printf("scheduler run failed: %v", err)
+		logger.Error("scheduler run failed: %v", err)
 		return
 	}
-	log.Printf("scheduler run completed: created=%d deduplicated=%d failed=%d", result.Created, result.Deduplicated, result.Failed)
+	logger.Info("scheduler run completed: created=%d deduplicated=%d failed=%d", result.Created, result.Deduplicated, result.Failed)
 }

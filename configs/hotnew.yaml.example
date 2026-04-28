@@ -1,0 +1,178 @@
+# ==============================================================================
+# hotnew 配置文件模板
+# 复制此文件为 hotnew.yaml 并根据实际情况修改配置
+# ==============================================================================
+
+# ==================== HTTP 服务配置 ====================
+http:
+  # 服务监听地址
+  addr: :8080
+
+# ==================== 摘要配置 ====================
+summary:
+  # 摘要最大字符数
+  max_chars: 180
+
+# ==================== 存储配置 ====================
+store:
+  # 存储后端类型: memory | file | sqlite
+  backend: sqlite
+  # 数据目录
+  data_dir: data
+  # SQLite 数据库文件路径
+  sqlite_dsn: data/hotnew.db
+  # 文件存储路径（当 backend=file 时使用）
+  file_articles_path: data/articles.jsonl
+  file_deliveries_path: data/deliveries.jsonl
+  file_retries_path: data/retry_jobs.jsonl
+  file_retries_archive_path: data/retry_jobs.archive.jsonl
+
+# ==================== 调度器配置 ====================
+scheduler:
+  # 是否启用定时调度
+  enabled: true
+  # 调度间隔（如: 15m, 1h）
+  interval: 15m
+  # 每次运行最多处理的文章数量
+  run_limit: 10
+  # 单次运行超时时间
+  run_timeout: 30s
+  # 是否在启动时立即执行一次
+  start_immediately: true
+
+# ==================== 重试配置 ====================
+retry:
+  # 是否启用重试机制
+  enabled: true
+  # 重试检查间隔
+  interval: 1m
+  # 每次重试批处理数量
+  batch_size: 10
+  # 重试超时时间
+  timeout: 30s
+  # 最大重试次数
+  max_attempts: 3
+  # 重试退避时间
+  backoff: 5m
+  # 最大退避时间
+  max_backoff: 6h
+  # 重试任务归档时间
+  archive_after: 168h
+  # 归档批处理数量
+  archive_batch: 100
+
+# ==================== 分发配置 ====================
+distribute:
+  # 异步分发缓冲区大小
+  async_buffer: 128
+
+  # 博客分发配置
+  blog:
+    enabled: false
+    endpoint: ""
+    timeout: 5s
+    auth_token: ""
+    site_name: hotnew
+    author: hotnew
+    mode: markdown
+
+  # 企业微信分发配置
+  wecom:
+    enabled: false
+    webhook: "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=YOUR_KEY"
+    timeout: 5s
+
+  # 钉钉分发配置
+  dingtalk:
+    enabled: false
+    webhook: "https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN"
+    timeout: 5s
+    # 安全类型: none | keyword | sign | both
+    security_type: none
+    keyword: ""
+    secret: ""
+    use_keyword: false
+    use_sign: false
+    rate_limit: 20
+    rate_limit_period: 60s
+
+# ==================== 日志配置 ====================
+logging:
+  # 日志级别: debug | verbose | info | notice | warning | error | fatal
+  level: info
+  # 日志格式: text | json
+  format: text
+  # 输出方式: console | file
+  output: console
+  # 日志文件路径（当 output=file 时使用）
+  file_path: logs/hotnew.log
+  # 单个日志文件最大大小（MB）
+  max_size: 10
+  # 保留备份文件数量
+  max_backups: 5
+  # 保留日志天数
+  max_age: 30
+  # 是否压缩日志文件
+  compress: true
+
+# ==================== RSS 数据源配置 ====================
+sources:
+  # 示例数据源 - 36氪
+  - name: 36kr
+    kind: rss
+    base_url: https://36kr.com
+    feed_url: https://36kr.com/feed
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://36kr.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5
+
+  # 示例数据源 - 钛媒体
+  - name: tmtpost
+    kind: rss
+    base_url: https://www.tmtpost.com
+    feed_url: https://www.tmtpost.com/feed
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://www.tmtpost.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5
+
+  # 示例数据源 - 爱范儿
+  - name: ifanr
+    kind: rss
+    base_url: https://www.ifanr.com
+    feed_url: https://www.ifanr.com/feed
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://www.ifanr.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5
+
+  # 示例数据源 - IT之家
+  - name: ithome
+    kind: rss
+    base_url: https://www.ithome.com
+    feed_url: https://www.ithome.com/rss/
+    access_mode: public_rss
+    license_note: "Only metadata and linked summaries should be redistributed after reviewing source terms."
+    terms_url: https://www.ithome.com
+    rate_limit: 60
+    enabled: true
+    timeout: 8s
+    user_agent: "hotnew/0.1 (+compliant-rss-fetcher)"
+    default_tag: 科技
+    fetch_batch_size: 5

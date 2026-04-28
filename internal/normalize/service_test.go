@@ -19,8 +19,8 @@ func TestNormalize(t *testing.T) {
 	if err != nil {
 		t.Fatalf("normalize error: %v", err)
 	}
-	if article.ID == "" || article.Hash == "" {
-		t.Fatalf("expected id and hash")
+	if article.ID == "" {
+		t.Fatalf("expected id")
 	}
 	if len(article.Tags) != 2 {
 		t.Fatalf("expected deduplicated tags, got %v", article.Tags)

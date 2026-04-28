@@ -36,7 +36,6 @@ func (Service) Normalize(raw domain.RawItem) (domain.Article, error) {
 		Content:     content,
 		Tags:        compactStrings(raw.Tags),
 		Language:    strings.TrimSpace(raw.Language),
-		Hash:        fingerprint,
 	}, nil
 }
 

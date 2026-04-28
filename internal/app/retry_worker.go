@@ -2,9 +2,10 @@ package app
 
 import (
 	"context"
-	"log"
 	"sync"
 	"time"
+
+	"hotnew/internal/platform/logger"
 )
 
 type RetryWorker struct {
@@ -67,11 +68,11 @@ func (w *RetryWorker) loop(ctx context.Context) {
 			result, err := w.processor.ProcessOnce(runCtx, w.batchSize)
 			cancel()
 			if err != nil {
-				log.Printf("retry worker failed: %v", err)
+				logger.Error("retry worker failed: %v", err)
 				continue
 			}
 			if result.Claimed > 0 {
-				log.Printf("retry worker processed: claimed=%d succeeded=%d failed=%d", result.Claimed, result.Succeeded, result.Failed)
+				logger.Info("retry worker processed: claimed=%d succeeded=%d failed=%d", result.Claimed, result.Succeeded, result.Failed)
 			}
 		}
 	}

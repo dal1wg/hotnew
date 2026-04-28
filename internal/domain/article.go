@@ -13,5 +13,4 @@ type Article struct {
 	Summary     string    `json:"summary,omitempty"`
 	Tags        []string  `json:"tags,omitempty"`
 	Language    string    `json:"language,omitempty"`
-	Hash        string    `json:"hash"`
 }

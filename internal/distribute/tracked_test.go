@@ -31,7 +31,7 @@ func TestTrackedDistributorRecordsFailures(t *testing.T) {
 		time.Minute,
 	)
 
-	err := distributor.Distribute(context.Background(), domain.Article{ID: "a1", Hash: "h1"})
+	err := distributor.Distribute(context.Background(), domain.Article{ID: "a1"})
 	if err == nil {
 		t.Fatalf("expected error")
 	}
